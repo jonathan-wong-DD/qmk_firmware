@@ -59,6 +59,9 @@ tap_dance_action_t tap_dance_actions[] = {
 #define HOME_L_M RCTL_T(KC_L)
 #define HOME_SC_M LALT_T(KC_SCLN)
 
+#define M_TAB_SYM LT(_MAC_SYMBOL, KC_TAB)
+#define W_TAB_SYM LT(_SYMBOL, KC_TAB)
+
 // Macros
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
    switch (keycode) {
@@ -129,7 +132,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MINS,          KC_EQL,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    KC_BSPC, KC_SPC, MO(_SYMBOL),           MO(_NUM), LT(_SYMBOL,KC_ENT),  KC_DEL
+                                    KC_BSPC, KC_SPC, W_TAB_SYM,           MO(_NUM), LT(_SYMBOL,KC_ENT),  KC_DEL
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -171,7 +174,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MINS,          KC_EQL,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     KC_BSPC, KC_SPC, MO(_MAC_SYMBOL),           MO(_MAC_NUM), LT(_MAC_SYMBOL, KC_ENT),  KC_DEL
+                                     KC_BSPC, KC_SPC, M_TAB_SYM,           MO(_MAC_NUM), LT(_MAC_SYMBOL, KC_ENT),  KC_DEL
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
