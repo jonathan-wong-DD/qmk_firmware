@@ -26,6 +26,10 @@ enum custom_keycodes {
    WIN_PREV_WORD,
    M_NEXT_W,   // Mac next word
    M_PREV_W,   // Mac previous word
+   SW_MAC,     // Select word on Mac
+   SW_WIN,     // Select word on Windows
+   SL_MAC,     // Select line on Mac
+   SL_WIN,     // Select line on Windows
 };
 
 // Tap Dance definitions
@@ -59,45 +63,69 @@ tap_dance_action_t tap_dance_actions[] = {
 #define HOME_L_M RCTL_T(KC_L)
 #define HOME_SC_M LALT_T(KC_SCLN)
 
+// Tap Dance for tab key
 #define M_TAB_SYM LT(_MAC_SYMBOL, KC_TAB)
 #define W_TAB_SYM LT(_SYMBOL, KC_TAB)
+
+// Mod Tap for Selections
+#define M_SW_CTRL LCTL_T(SW_MAC)
+#define W_SW_CTRL LCTL_T(SW_WIN)
+#define M_SL_SHFT LSFT_T(SL_MAC)
+#define W_SL_SHFT LSFT_T(SL_WIN)
 
 // Macros
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
    switch (keycode) {
    case M_NEXT_W:
        if (record->event.pressed) {
-           // when keycode is pressed
            SEND_STRING(SS_DOWN(X_LALT) SS_TAP(X_RGHT) SS_UP(X_LALT));
        } else {
-           // when keycode is released
        }
        break;
 
    case M_PREV_W:
        if (record->event.pressed) {
-           // when keycode is pressed
            SEND_STRING(SS_DOWN(X_LALT) SS_TAP(X_LEFT) SS_UP(X_LALT));
        } else {
-           // when keycode is released
        }
        break;
    case WIN_NEXT_WORD:
        if (record->event.pressed) {
-           // when keycode QMKBEST is pressed
            SEND_STRING(SS_DOWN(X_LCTL) SS_TAP(X_RGHT) SS_UP(X_LCTL));
        } else {
-           // when keycode QMKBEST is released
        }
        break;
    case WIN_PREV_WORD:
        if (record->event.pressed) {
-           // when keycode QMKBEST is pressed
            SEND_STRING(SS_DOWN(X_LCTL) SS_TAP(X_LEFT) SS_UP(X_LCTL));
        } else {
-           // when keycode QMKBEST is released
        }
       break;
+   case M_SW_CTRL:
+       if (record->tap.count && record->event.pressed) {
+           SEND_STRING(SS_DOWN(X_LALT) SS_TAP(X_LEFT) SS_DOWN(X_LSFT) SS_TAP(X_RGHT) SS_UP(X_LALT) SS_UP(X_LSFT));
+       } else {
+       }
+       break;
+   case W_SW_CTRL:
+         if (record->tap.count && record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_LCTL) SS_TAP(X_LEFT) SS_DOWN(X_LSFT) SS_TAP(X_RGHT) SS_UP(X_LCTL) SS_UP(X_LSFT));
+         } else {
+         }
+         break;
+   case M_SL_SHFT:
+         if (record->tap.count && record->event.pressed) {
+            SEND_STRING(SS_TAP(X_HOME)  SS_DOWN(X_LSFT) SS_TAP(X_END) SS_UP(X_LSFT) );
+         } else {
+         }
+         break;
+   case W_SL_SHFT:
+         if (record->tap.count && record->event.pressed) {
+            SEND_STRING(SS_TAP(X_HOME)  SS_DOWN(X_LSFT) SS_TAP(X_END) SS_UP(X_LSFT) );
+         } else {
+         }
+         break;
+
    } 
    return true;
 };
@@ -128,9 +156,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LCTL, HOME_A,  HOME_S,  HOME_D,  HOME_F,  KC_G,                               KC_H,    HOME_J,  HOME_K,  HOME_L,  HOME_SCLN, KC_QUOT,
+     W_SW_CTRL, HOME_A,  HOME_S,  HOME_D,  HOME_F,  KC_G,                               KC_H,    HOME_J,  HOME_K,  HOME_L,  HOME_SCLN, KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MINS,          KC_EQL,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
+     W_SL_SHFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MINS,          KC_EQL,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     KC_BSPC, KC_SPC, W_TAB_SYM,           MO(_NUM), LT(_SYMBOL,KC_ENT),  KC_DEL
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -170,9 +198,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LCTL, HOME_A_M,HOME_S_M, HOME_D_M,HOME_F_M,KC_G,                              KC_H,    HOME_J_M,HOME_K_M,HOME_L_M,HOME_SC_M, KC_QUOT,
+     M_SW_CTRL, HOME_A_M,HOME_S_M, HOME_D_M,HOME_F_M,KC_G,                              KC_H,    HOME_J_M,HOME_K_M,HOME_L_M,HOME_SC_M, KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MINS,          KC_EQL,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
+     M_SL_SHFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_MINS,          KC_EQL,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                      KC_BSPC, KC_SPC, M_TAB_SYM,           MO(_MAC_NUM), LT(_MAC_SYMBOL, KC_ENT),  KC_DEL
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
